@@ -30,5 +30,4 @@ Before you begin, ensure you have met the following requirements:
 
 - Linux installed (or git bash, wsl)
 
-## screenshots
 
