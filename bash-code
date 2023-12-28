@@ -1,0 +1,135 @@
+#!/bin/bash
+
+generate_man_page() {
+  echo "internsctl(1) - Custom Linux command"
+  echo "==============================="
+  echo "NAME"
+  echo "    internsctl - perform various system operations"
+  echo ""
+  echo "SYNOPSIS"
+  echo "    internsctl"
+  echo ""
+  echo "DESCRIPTION"
+  echo "    internsctl is a custom Linux command that provides various system operations."
+  # Add more sections as needed
+}
+display_help() {
+  echo "Usage: internsctl"
+  echo ""
+  echo "Options:"
+  echo "    --help        Display this help message"
+  echo "    --version     Display command version"
+  echo ""
+  echo "Commands:"
+  echo "    cpu getinfo         Get CPU information"
+  echo "    memory getinfo      Get memory information"
+  echo "    user create         Create a new user"
+  echo "    user list           List all regular users"
+  echo "    user list --sudo-only List users with sudo permissions"
+  echo "    file getinfo        Get information about a file"
+}
+
+display_version() {
+  echo "internsctl v0.1.0"
+}
+
+get_cpu_info() {
+  lscpu
+}
+
+get_memory_info() {
+  free
+}
+
+create_user() {
+  username="$1"
+  useradd "$username"
+  echo "User $username created successfully."
+}
+
+list_users() {
+  if [ "$1" == "--sudo-only" ]; then
+    grep -Po '^sudo.+:\K.*$' /etc/group | tr ',' '\n'
+  else
+    cut -d: -f1 /etc/passwd
+  fi
+}
+
+get_file_info() {
+  filename="$1"
+  size=$(stat --printf="%s" "$filename")
+  permissions=$(stat --format="%A" "$filename")
+  owner=$(stat --format="%U" "$filename")
+  last_modified=$(stat --format="%y" "$filename")
+
+  echo "File: $filename"
+  echo "Access: $permissions"
+  echo "Size(B): $size"
+  echo "Owner: $owner"
+  echo "Modify: $last_modified"
+}
+
+case "$1" in
+  "cpu" )
+    case "$2" in
+      "getinfo" )
+        get_cpu_info
+        ;;
+      * )
+        display_help
+        ;;
+    esac
+    ;;
+  "memory" )
+    case "$2" in
+      "getinfo" )
+        get_memory_info
+        ;;
+      * )
+        display_help
+        ;;
+    esac
+    ;;
+  "user" )
+    case "$2" in
+      "create" )
+        create_user "$3"
+        ;;
+      "list" )
+        list_users "$3"
+        ;;
+      * )
+        display_help
+        ;;
+    esac
+    ;;
+  "file" )
+    case "$2" in
+      "getinfo" )
+        if [ "$3" == "--size" ]; then
+          stat --printf="%s" "$4"
+        elif [ "$3" == "--permissions" ]; then
+          stat --format="%A" "$4"
+        elif [ "$3" == "--owner" ]; then
+          stat --format="%U" "$4"
+        elif [ "$3" == "--last-modified" ]; then
+          stat --format="%y" "$4"
+        else
+          get_file_info "$3"
+        fi
+        ;;
+      * )
+        display_help
+        ;;
+    esac
+    ;;
+  "--help" )
+    display_help
+    ;;
+  "--version" )
+    display_version
+    ;;
+  * )
+    display_manual
+    ;;
+esac
