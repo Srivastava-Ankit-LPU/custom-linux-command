@@ -6,7 +6,6 @@ A custom linux command "internsctl".
 - [Overview](#overview)
 - [Features](#features)
 - [Prerequisites](#prerequisites)
-- [Screenshots](#screenshots)
 
 ## Overview
 
