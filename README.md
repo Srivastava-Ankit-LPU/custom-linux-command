@@ -69,6 +69,7 @@ Part 3:
  file info command:
 ![Screenshot (2699)](https://github.com/Srivastava-Ankit-LPU/custom-linux-command/assets/83294365/797616eb-99ef-435b-8aa3-c3732897cc5a)
 
+![Screenshot (2720)](https://github.com/Srivastava-Ankit-LPU/custom-linux-command/assets/83294365/aa26e470-07aa-4a1e-b760-3754c31fdce2)
 
 
 
